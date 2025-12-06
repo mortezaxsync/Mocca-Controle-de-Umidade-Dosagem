@@ -16,6 +16,12 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
     }
   };
 
+  // Estilo comum para os inputs (Branco com borda escura)
+  const inputClassName = "w-full px-3 py-2 bg-white text-slate-900 border border-slate-800 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition font-medium";
+  
+  // Estilo para alinhar labels (Força altura mínima para alinhar inputs mesmo com quebra de linha)
+  const labelClassName = "block text-sm font-medium text-slate-700 mb-1 h-10 flex items-end pb-1";
+
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-full">
       <div className="flex items-center gap-2 mb-6 pb-4 border-b border-slate-100">
@@ -30,9 +36,9 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
           <h3 className="text-xs font-semibold text-slate-400 uppercase mb-3">Produção & Matéria Prima</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className={labelClassName}>
                 <div className="flex items-center gap-1.5">
-                  <Gauge className="w-4 h-4 text-slate-400" />
+                  <Gauge className="w-4 h-4 text-slate-500" />
                   Vazão (kg/h)
                 </div>
               </label>
@@ -40,14 +46,14 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
                 type="number"
                 value={state.flowRate}
                 onChange={(e) => handleNumberChange('flowRate', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                className={inputClassName}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className={labelClassName}>
                 <div className="flex items-center gap-1.5">
-                  <Scale className="w-4 h-4 text-slate-400" />
-                  Trigo Seco (%)
+                  <Scale className="w-4 h-4 text-slate-500" />
+                  Umid. Trigo Seco
                 </div>
               </label>
               <input
@@ -55,7 +61,7 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
                 step="0.1"
                 value={state.initialMoisture}
                 onChange={(e) => handleNumberChange('initialMoisture', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                className={inputClassName}
               />
             </div>
             <div className="md:col-span-2">
@@ -68,7 +74,7 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
                     className={`px-3 py-2 text-xs font-bold rounded-lg border transition-all ${
                       state.wheatType === type
                         ? 'bg-amber-100 border-amber-300 text-amber-800'
-                        : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-slate-100'
+                        : 'bg-slate-50 border-slate-300 text-slate-600 hover:bg-slate-100'
                     }`}
                   >
                     {type}
@@ -86,7 +92,7 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 <div className="flex items-center gap-1.5">
-                  <Thermometer className="w-4 h-4 text-slate-400" />
+                  <Thermometer className="w-4 h-4 text-slate-500" />
                   Temp (°C)
                 </div>
               </label>
@@ -94,13 +100,13 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
                 type="number"
                 value={state.airTemperature}
                 onChange={(e) => handleNumberChange('airTemperature', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                className={inputClassName}
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 <div className="flex items-center gap-1.5">
-                  <Droplet className="w-4 h-4 text-slate-400" />
+                  <Droplet className="w-4 h-4 text-slate-500" />
                   Umidade Ar (%)
                 </div>
               </label>
@@ -108,7 +114,7 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
                 type="number"
                 value={state.relativeHumidity}
                 onChange={(e) => handleNumberChange('relativeHumidity', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                className={inputClassName}
               />
             </div>
           </div>
@@ -139,7 +145,7 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
                 step="0.1"
                 value={state.targetFlourMoisture}
                 onChange={(e) => handleNumberChange('targetFlourMoisture', e.target.value)}
-                className="w-20 px-2 py-1 text-center font-bold text-indigo-700 bg-white border border-indigo-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-20 px-2 py-1 text-center font-bold text-indigo-700 bg-white border border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <p className="text-xs text-indigo-600 mt-1">Normalmente entre 14.0% e 15.0%</p>
@@ -159,7 +165,7 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
                     if (e.target.value === '') onChange('manualLossOverride', null);
                     else handleNumberChange('manualLossOverride', e.target.value);
                   }}
-                  className="w-full px-2 py-1 text-sm bg-white border border-indigo-200 rounded-md focus:outline-none"
+                  className="w-full px-2 py-1 text-sm bg-white border border-indigo-300 rounded-md focus:outline-none"
                 />
                 <button 
                   onClick={() => onChange('manualLossOverride', null)}
@@ -183,7 +189,7 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
             <div className="flex-1">
                <label className="block text-sm font-medium text-slate-700 mb-1">
                 <div className="flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-slate-400" />
+                  <Clock className="w-4 h-4 text-slate-500" />
                   Início
                 </div>
               </label>
@@ -191,7 +197,7 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
                 type="time"
                 value={state.startTime}
                 onChange={(e) => onChange('startTime', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                className={inputClassName}
               />
             </div>
              <div className="flex-1">
@@ -202,7 +208,7 @@ const ControlPanel: React.FC<Props> = ({ state, onChange }) => {
                 type="number"
                 value={state.shiftDuration}
                 onChange={(e) => handleNumberChange('shiftDuration', e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                className={inputClassName}
               />
             </div>
           </div>
