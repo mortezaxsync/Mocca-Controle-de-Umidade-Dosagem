@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { MillingState, WheatType } from './types';
 import { DEFAULT_VALUES } from './constants';
@@ -6,7 +5,8 @@ import { calculateWaterDosage } from './utils/calculations';
 import ControlPanel from './components/ControlPanel';
 import ProcessFlow from './components/ProcessFlow';
 import ScheduleTable from './components/ScheduleTable';
-import { Droplets, Activity, Wheat } from 'lucide-react';
+import WeatherWidget from './components/WeatherWidget';
+import { Droplets, Activity, Calendar, Crosshair } from 'lucide-react';
 
 function App() {
   // Estado principal da aplicação
@@ -33,68 +33,84 @@ function App() {
   // Data atual para exibição
   const today = new Date().toLocaleDateString('pt-BR');
 
+  // Brand Color
+  const BRAND_BLUE = '#2c5ba6';
+
   return (
     <div className="min-h-screen bg-slate-50 pb-12 print:bg-white font-sans">
       
-      {/* HEADER CUSTOMIZADO */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6 print:hidden">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+      {/* HEADER NOVO - MODERNO E ASSIMÉTRICO */}
+      <header className="w-full bg-[#1e2330] shadow-xl overflow-hidden print:hidden mb-8 relative z-20">
+        <div className="max-w-[1920px] mx-auto flex h-36">
           
-          {/* LOGO MOCCA */}
-          <div className="flex flex-col items-center justify-center shrink-0">
-            <div className="flex items-center gap-3">
-              {/* Trigo Esquerdo */}
-              <Wheat 
-                className="w-12 h-12 text-yellow-400 -rotate-12" 
-                strokeWidth={2.5} 
-              />
-              <div className="text-7xl font-black text-blue-700 tracking-wide">
+          {/* LADO ESQUERDO: LOGO (Fundo Branco com Corte Diagonal) */}
+          <div 
+            className="bg-white h-full relative z-10 flex items-center justify-center pl-6 lg:pl-10 pr-28 shrink-0"
+            style={{ clipPath: 'polygon(0 0, 100% 0, 92% 100%, 0% 100%)', width: 'fit-content' }}
+          >
+            <div className="flex flex-col leading-none items-center">
+              {/* Título MOCCA */}
+              <h1 
+                className="text-[4.5rem] font-black tracking-tighter leading-[0.8] mb-1" 
+                style={{ color: BRAND_BLUE, fontFamily: 'Inter, sans-serif' }}
+              >
                 MOCCA
+              </h1>
+              
+              {/* Subtítulo Stencil */}
+              <div 
+                className="flex flex-col items-center font-stencil text-2xl uppercase tracking-widest w-full"
+                style={{ color: BRAND_BLUE }}
+              >
+                <span className="leading-none whitespace-nowrap">Moinho Comercial</span>
+                <span className="leading-none mt-1">de Céu Azul</span>
               </div>
-              {/* Trigo Direito */}
-              <Wheat 
-                className="w-12 h-12 text-yellow-400 rotate-12 transform scale-x-[-1]" 
-                strokeWidth={2.5} 
-              />
-            </div>
-            <div className="text-sm font-bold text-blue-700 tracking-[0.2em] uppercase mt-1">
-              Moinho Comercial Céu Azul
             </div>
           </div>
 
-          {/* CARD PRETO/AZUL (HEADER) */}
-          <div className="w-full max-w-2xl bg-[#0f172a] text-white rounded-3xl p-6 shadow-2xl flex items-center justify-between min-h-[140px] relative overflow-hidden">
-             {/* Efeito de fundo sutil */}
-             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+          {/* LADO DIREITO: TÍTULO E WIDGETS (Fundo Escuro) */}
+          <div className="flex-1 flex items-center justify-between px-8 lg:px-16 text-white overflow-hidden">
+            
+            {/* Título Central com Ícone */}
+            <div className="flex items-center gap-6 shrink-0">
+              {/* Ícone Circular Estilizado */}
+              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg relative shrink-0 hidden xl:flex">
+                 <Crosshair className="w-12 h-12 text-[#0ea5e9] absolute opacity-40" strokeWidth={1} />
+                 <Droplets className="w-8 h-8 text-[#0ea5e9] fill-[#0ea5e9] relative z-10" />
+              </div>
+              
+              <h2 className="text-2xl lg:text-3xl font-semibold leading-tight text-slate-100 hidden lg:block">
+                Controle de Umidade & <br />
+                <span className="font-bold text-white">Dosagem</span>
+              </h2>
+            </div>
 
-             <div className="flex items-center gap-6 relative z-10">
-               {/* Icon Box */}
-               <div className="bg-blue-600 h-20 w-20 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-900/50">
-                  <Droplets className="w-10 h-10 text-white fill-white" strokeWidth={1.5} />
-               </div>
-               
-               {/* Titles */}
-               <div className="flex flex-col justify-center">
-                 <h1 className="text-2xl md:text-3xl font-bold leading-tight tracking-tight">
-                   Controle de <br/>
-                   <span className="text-blue-100">Umidade & Dosagem</span>
-                 </h1>
-               </div>
-             </div>
+            {/* Widgets Section: Weather + Date */}
+            <div className="flex items-center gap-6 ml-auto">
+              
+              {/* Weather Widget */}
+              <WeatherWidget />
 
-             {/* Date */}
-             <div className="text-right h-full flex flex-col justify-start relative z-10">
-               <span className="text-xl font-medium text-slate-300 tracking-wide">{today}</span>
-             </div>
+              {/* Widget de Data e Status */}
+              <div className="bg-white text-slate-800 px-6 py-3 rounded-xl shadow-lg flex items-center gap-4 shrink-0 h-[86px]">
+                <div className="bg-[#0ea5e9]/10 p-2 rounded-lg">
+                  <Calendar className="w-8 h-8 text-[#0ea5e9]" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xl font-bold tracking-tight">{today}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-medium text-[#0ea5e9]">Status: OK</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
           </div>
-
         </div>
-      </div>
-      
-      {/* Separator visual */}
-      <div className="w-full h-px bg-slate-200 max-w-7xl mx-auto mb-8 print:hidden"></div>
+      </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           

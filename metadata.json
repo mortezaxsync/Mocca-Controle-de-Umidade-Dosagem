@@ -1,5 +1,7 @@
 {
   "name": "Moinho Master - Calculadora de Umidade",
   "description": "Calculadora industrial para moagem de trigo, focada em atingir a umidade final da farinha considerando perdas de processo e condições ambientais.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "geolocation"
+  ]
 }
